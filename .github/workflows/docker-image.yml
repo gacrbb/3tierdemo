@@ -3,6 +3,9 @@ name: Docker Hub Login
 on:
   push:
     branches: [ "main" ]
+permissions:
+  contents: write
+  packages: write
 
 jobs:
   login:
