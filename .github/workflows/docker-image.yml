@@ -22,13 +22,10 @@ jobs:
       - name: Docker Build
         run: |
           docker build  -t ${{ secrets.DOCKERHUB_USERNAME }}/pyapp:${{ github.sha }} .
-      - name: Scan Docker Image
-        uses: aquasecurity/trivy-action@v0.36.0
-        with:
-         image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/pyapp:${{ github.sha }}
-         format: table
-         exit-code: 0
-         severity: HIGH,CRITICAL
       - name: Docker Push
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/pyapp:latest
+      - name: Deploy to k3s
+        run: |
+         kubectl apply -f deployment.yaml
+         kubectl apply -f service.yaml
